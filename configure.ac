@@ -13,7 +13,6 @@ AC_INIT([tesseract],
 AC_PROG_CXX([g++ clang++])
 AC_LANG([C++])
 AC_LANG_COMPILER_REQUIRE
-CXXFLAGS=${CXXFLAGS:-""}
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([api/tesseractmain.cpp])
@@ -287,12 +286,10 @@ AC_ARG_ENABLE([debug],
     [debug=$enableval],
     [debug="no"])
 AC_MSG_RESULT([$debug])
-if test x"$debug" = x"yes"; then
-    AM_CXXFLAGS="$AM_CXXFLAGS -g -Wall -O0 -DDEBUG"
-    AM_CPPFLAGS="$AM_CPPFLAGS -g -Wall -O0 -DDEBUG"
+if test x"$debug" != x"no"; then
+    AM_CPPFLAGS="$AM_CPPFLAGS -Wall -DDEBUG"
 else
-    AM_CXXFLAGS="$AM_CXXFLAGS -O2 -DNDEBUG"
-    AM_CPPFLAGS="$AM_CPPFLAGS -O2 -DNDEBUG"
+    AM_CPPFLAGS="$AM_CPPFLAGS -Wall -DNDEBUG"
 fi
 
 #localedir='${prefix}/share/locale'
@@ -354,7 +351,6 @@ dnl ********************
 dnl turn on c++11
 dnl ********************
 
-OLD_CXXFLAGS=$CXXFLAGS
 AC_MSG_CHECKING([whether compiler supports C++11])
 CXXFLAGS="$CXXFLAGS -std=c++11"
 snprintfworks=no
@@ -373,25 +369,19 @@ AC_COMPILE_IFELSE(
      AC_MSG_ERROR([Your compiler does not have the necessary c++11 support! Cannot proceed.])
    ])
 AC_CHECK_FUNCS([snprintf],, [snprintfworks=yes])
-CXXFLAGS="$OLD_CXXFLAGS"
 
 
 # set c++11 support based on platform/compiler
 case "${host_os}" in
   cygwin*)
-    CXXFLAGS="$CXXFLAGS -std=gnu++11"
     ;;
   *-darwin* | *-macos10*)
      if test "x$CLANG" = "xyes"; then
-       CXXFLAGS="$CXXFLAGS -std=c++11 "
        LDFLAGS="$LDFLAGS -stdlib=libc++"
-     else
-       CXXFLAGS="$CXXFLAGS -std=c++11"
      fi
     ;;
   *)
     # default
-    CXXFLAGS="$CXXFLAGS -std=c++11"
     ;;
 esac
 
