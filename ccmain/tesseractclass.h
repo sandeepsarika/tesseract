@@ -166,7 +166,7 @@ class Tesseract : public Wordrec {
   Tesseract();
   ~Tesseract();
 
-  // Return appropriate dictionary 
+  // Return appropriate dictionary
   Dict& getDict() override;
 
   // Clear as much used memory as possible without resetting the adaptive
