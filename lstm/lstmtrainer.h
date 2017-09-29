@@ -107,6 +107,7 @@ class LSTMTrainer : public LSTMRecognizer {
   // previously setup traineddata containing dawgs, UNICHARSET and
   // UnicharCompress. Note: Call before InitNetwork!
   void InitCharSet(const std::string& traineddata_path) {
+    // TODO: user friendly error message.
     ASSERT_HOST(mgr_.Init(traineddata_path.c_str()));
     InitCharSet();
   }
