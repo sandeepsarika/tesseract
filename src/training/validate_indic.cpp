@@ -95,7 +95,7 @@ Validator::CharClass ValidateIndic::UnicodeToCharClass(char32 ch) const {
 // representation to make it consistent by adding a ZWNJ if missing from a
 // non-linking virama. Returns false with an invalid sequence.
 bool ValidateIndic::ConsumeViramaIfValid(IndicPair joiner, bool post_matra) {
-  int num_codes = codes_.size();
+  const unsigned num_codes = codes_.size();
   if (joiner.first == CharClass::kOther) {
     CodeOnlyToOutput();
     if (codes_used_ < num_codes &&
@@ -167,12 +167,12 @@ bool ValidateIndic::ConsumeViramaIfValid(IndicPair joiner, bool post_matra) {
 // Helper consumes/copies a series of consonants separated by viramas while
 // valid, but not any vowel or other modifiers.
 bool ValidateIndic::ConsumeConsonantHeadIfValid() {
-  const int num_codes = codes_.size();
+  const unsigned num_codes = codes_.size();
   // Consonant aksara
   do {
     CodeOnlyToOutput();
     // Special Sinhala case of [H Z Yayana/Rayana].
-    int index = output_.size() - 3;
+    unsigned index = output_.size() - 3;
     if (output_used_ <= index &&
         (output_.back() == kYayana || output_.back() == kRayana) &&
         IsVirama(output_[index]) && output_[index + 1] == kZeroWidthJoiner) {
