@@ -22,6 +22,7 @@
 // a unicharset.
 
 #include <cstdlib>
+#include <unicode/utf8.h>       // U8_NEXT
 #include "boxread.h"
 #include "commandlineflags.h"
 #include "genericvector.h"
@@ -50,10 +51,22 @@ static void AddStringsToUnicharset(const GenericVector<STRING>& strings,
                                      /*report_errors*/ true,
                                      strings[i].string(), &normalized)) {
       for (const std::string& normed : normalized) {
-
-       // normed is a UTF-8 encoded string
-        if (normed.empty() || IsUTF8Whitespace(normed.c_str())) continue;
-        unicharset->unichar_insert(normed.c_str());
+        if (normed.empty()) {
+          // This should not happen.
+          tprintf("Normalization got empty string for string '%s'\n",
+                  strings[i].c_str());
+          continue;
+        }
+        UChar32 uc;
+        int32_t offset = 0;
+        const char *s = normed.c_str();
+        U8_NEXT(s, offset, -1, uc);
+        // tprintf("0x%04x = %s\n", uc, s);
+        IsUTF8Whitespace(s);
+        if (IsWhitespace(uc)) {
+          continue;
+        }
+        unicharset->unichar_insert(s);
       }
     } else {
       tprintf("Normalization failed for string '%s'\n", strings[i].c_str());
