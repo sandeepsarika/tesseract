@@ -33,22 +33,56 @@ UNUSABLE_LANGUAGE_CODES=""
 
 FRAKTUR_FONTS=(
     "Alte Schwabacher" \
+    "Alte Schwabacher Semi-Bold" \
+    "Blankenburg_UNZ???" \
     "CaslonishFraxx Medium" \
     "Cloister Black, Light" \
     "DS Caslon Gotisch" \
+    "Fette Deutsche Schrift" \
     "Proclamate Light, Light" \
     "HumboldtFraktur Bold" \
+    "HumboldtFraktur" \
+    "HumboldtFraktur Zier" \
     "Kleist-Fraktur" \
+    "Kleist-Fraktur Zierbuchstaben" \
     "Schmalfette Fraktur" \
     "Schwabacher" \
     "TypographerFraktur Bold" \
     "TypographerFraktur Medium" \
+    "TypographerFraktur" \
     "UnifrakturMaguntia" \
     "Walbaum-Fraktur" \
     "WieynkFraktur Bold" \
     "WieynkFraktur" \
     "Zentenar Fraktur Bold" \
+    "Zentenar Fraktur Osf Bold" \
     "Zentenar Fraktur" \
+    "EB Garamond" \
+    "EB Garamond Italic" \
+    "GFS Didot Bold Italic" \
+    "GFS Didot Italic" \
+    "GFS Didot" \
+    "IM FELL Double Pica PRO Italic" \
+    "IM FELL Double Pica PRO" \
+    "IM FELL DW Pica PRO Italic" \
+    "IM FELL DW Pica PRO" \
+    "IM FELL English PRO Italic" \
+    "IM FELL English PRO" \
+    "IM FELL French Canon PRO Italic" \
+    "IM FELL French Canon PRO" \
+    "IM FELL Great Primer PRO Italic" \
+    "IM FELL Great Primer PRO" \
+    "Junicode Bold Italic" \
+    "Junicode Bold" \
+    "Junicode Italic" \
+    "Junicode" \
+    "Kanone Kaffeesatz Bold" \
+    "Kanone Kaffeesatz Light" \
+    "Kanone Kaffeesatz" \
+    "Kanone Kaffeesatz Ultra-Light" \
+    "Old Standard TT Bold" \
+    "Old Standard TT Italic" \
+    "Old Standard TT" \
 )
 
 # List of fonts to train on
