@@ -13,7 +13,8 @@ cache:
   - c:/Users/appveyor/.cppan/storage
 
 configuration:
-  - Release
+  #- Release
+  - RelWithDebInfo
   
 # for curl
 install:
@@ -37,18 +38,16 @@ before_build:
 build_script:
   - mkdir build
   - mkdir build\bin
-  - mkdir build\bin\Release
+  - mkdir build\bin\%CONFIGURATION%
   - cd build
   #- cmd: 'echo local_settings: > cppan.yml'
   #- cmd: 'echo     generator: %generator% >> cppan.yml'
   #- cmd: 'echo     use_shared_libs: true >> cppan.yml'
   #- cppan --build ..
   - cmake .. -G "%generator%"
-  #- cmake --build . --config Release > bin\Release\log.txt 2>&1
-  #- cmake --build . --config Release
-  - cmake --build . --config RelWithDebInfo
+  - cmake --build . --config %CONFIGURATION% 2>&1 | tee bin\%CONFIGURATION%\log.txt
 
 artifacts:
-  - path: build\bin\Release
+  - path: build\bin\%CONFIGURATION%
   #- path: build
     name: tesseract-$(APPVEYOR_BUILD_VERSION)
