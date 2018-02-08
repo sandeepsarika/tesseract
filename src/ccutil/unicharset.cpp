@@ -172,6 +172,8 @@ void UNICHARSET::UNICHAR_PROPERTIES::CopyFrom(const UNICHAR_PROPERTIES& src) {
   fragment = saved_fragment;
 }
 
+const char UNICHARSET::null_script[] = "NULL";
+
 UNICHARSET::UNICHARSET() :
     unichars(nullptr),
     ids(),
@@ -197,7 +199,7 @@ void UNICHARSET::reserve(int unichars_number) {
     for (int i = 0; i < size_used; ++i)
       unichars_new[i] = unichars[i];
     for (int j = size_used; j < unichars_number; ++j) {
-      unichars_new[j].properties.script_id = add_script(null_script);
+      unichars_new[j].properties.script_id = null_sid_;
     }
     delete[] unichars;
     unichars = unichars_new;
@@ -926,8 +928,6 @@ void UNICHARSET::post_load_setup() {
       (x_height_alphas > cap_height_alphas * kMinXHeightFraction &&
        cap_height_alphas > x_height_alphas * kMinCapHeightFraction);
 
-  null_sid_ = get_script_id_from_name(null_script);
-  ASSERT_HOST(null_sid_ == 0);
   common_sid_ = get_script_id_from_name("Common");
   latin_sid_ = get_script_id_from_name("Latin");
   cyrillic_sid_ = get_script_id_from_name("Cyrillic");
@@ -1111,7 +1111,7 @@ int UNICHARSET::get_script_id_from_name(const char* script_name) const {
     if (strcmp(script_name, script_table[i]) == 0)
       return i;
   }
-  return 0;  // 0 is always the null_script
+  return null_sid_;
 }
 
 // Removes/replaces content that belongs in rendered text, but not in the

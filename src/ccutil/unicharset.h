@@ -153,30 +153,6 @@ class UNICHARSET {
   // List of strings for the SpecialUnicharCodes. Keep in sync with the enum.
   static TESS_API const char* kSpecialUnicharCodes[SPECIAL_UNICHAR_CODES_COUNT];
 
-  // ICU 2.0 UCharDirection enum (from third_party/icu/include/unicode/uchar.h)
-  enum Direction {
-      U_LEFT_TO_RIGHT               = 0,
-      U_RIGHT_TO_LEFT               = 1,
-      U_EUROPEAN_NUMBER             = 2,
-      U_EUROPEAN_NUMBER_SEPARATOR   = 3,
-      U_EUROPEAN_NUMBER_TERMINATOR  = 4,
-      U_ARABIC_NUMBER               = 5,
-      U_COMMON_NUMBER_SEPARATOR     = 6,
-      U_BLOCK_SEPARATOR             = 7,
-      U_SEGMENT_SEPARATOR           = 8,
-      U_WHITE_SPACE_NEUTRAL         = 9,
-      U_OTHER_NEUTRAL               = 10,
-      U_LEFT_TO_RIGHT_EMBEDDING     = 11,
-      U_LEFT_TO_RIGHT_OVERRIDE      = 12,
-      U_RIGHT_TO_LEFT_ARABIC        = 13,
-      U_RIGHT_TO_LEFT_EMBEDDING     = 14,
-      U_RIGHT_TO_LEFT_OVERRIDE      = 15,
-      U_POP_DIRECTIONAL_FORMAT      = 16,
-      U_DIR_NON_SPACING_MARK        = 17,
-      U_BOUNDARY_NEUTRAL            = 18,
-      U_CHAR_DIRECTION_COUNT
-  };
-
   // Create an empty UNICHARSET
   UNICHARSET();
 
