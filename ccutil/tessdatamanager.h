@@ -25,7 +25,6 @@
 #include "host.h"
 #include "strngs.h"
 #include "tprintf.h"
-#include "version.h"
 
 static const char kTrainedDataSuffix[] = "traineddata";
 
@@ -131,11 +130,11 @@ static const int kMaxNumTessdataEntries = 1000;
 class TessdataManager {
  public:
   TessdataManager() : reader_(nullptr), is_loaded_(false), swap_(false) {
-    SetVersionString(TESSERACT_VERSION_STR);
+    SetVersionString(tesseract::TessBaseAPI::Version());
   }
   explicit TessdataManager(FileReader reader)
       : reader_(reader), is_loaded_(false), swap_(false) {
-    SetVersionString(TESSERACT_VERSION_STR);
+    SetVersionString(tesseract::TessBaseAPI::Version());
   }
   ~TessdataManager() {}
 
