@@ -17,7 +17,8 @@ jobs:
     - name: Install packages
       run: |
         sudo apt-get update && \
-        sudo apt-get install mingw-w64-tools nsis asciidoc xsltproc \
+        sudo apt-get install --no-install-recommends \
+          mingw-w64-tools nsis asciidoc xsltproc \
           g++-mingw-w64-i686 \
           mingw64-i686-liblept5 mingw64-i686-curl \
           mingw64-i686-libarchive mingw64-i686-giflib mingw64-i686-libpng \
@@ -39,7 +40,7 @@ jobs:
       run: |
         mkdir -p bin/w32
         # Run configure.
-        cd bin/w32 && ./configure --disable-openmp --host=i686-w64-mingw32 \
+        cd bin/w32 && ../../configure --disable-openmp --host=i686-w64-mingw32 \
           --prefix=/usr/i686-w64-mingw32 \
           CXX=i686-w64-mingw32-g++-posix \
           CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
@@ -67,7 +68,7 @@ jobs:
       run: |
         mkdir -p bin/w64
         # Run configure.
-        cd bin/w64 && ./configure --disable-openmp --host=x86_64-w64-mingw32 \
+        cd bin/w64 && ../../configure --disable-openmp --host=x86_64-w64-mingw32 \
           --prefix=/usr/x86_64-w64-mingw32 \
           CXX=x86_64-w64-mingw32-g++-posix \
           CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
