@@ -4,8 +4,8 @@ name: Test build for Windows
 
 on:
   push:
-    branches:
-    - 'UB-Mannheim/**'
+#    branches:
+#    - 'UB-Mannheim/**'
 
 jobs:
   prepare:
