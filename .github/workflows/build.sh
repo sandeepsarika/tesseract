@@ -8,9 +8,11 @@ set -e
 set -x
 
 ARCH=$1
+DLLS="libgcc_s_sjlj-1.dll libgomp-1.dll libstdc++-6.dll"
 
 if test "$ARCH" != "i686"; then
   ARCH=x86_64
+  DLLS="libgcc_s_seh-1.dll libgomp-1.dll libstdc++-6.dll"
 fi
 
 ROOTDIR=$PWD
@@ -33,6 +35,12 @@ sudo apt-get install --no-install-recommends \
   $PKG_ARCH-libarchive $PKG_ARCH-giflib $PKG_ARCH-libpng \
   $PKG_ARCH-libwebp $PKG_ARCH-openjpeg2 $PKG_ARCH-tiff \
   $PKG_ARCH-pango1.0 $PKG_ARCH-icu
+
+for dll in $DLLS; do
+  ln -sf /usr/lib/gcc/$HOST/*-posix/$dll dll/$HOST
+done
+
+file dll/$HOST/*
 
 TAG=5.0.0-alpha.$(date +%Y%m%d)
 
