@@ -5,88 +5,29 @@ name: Cross build for Windows
 on:
   push:
     branches:
-    - 'tesseract-ocr/**'
+    - 'windows'
 
 jobs:
-  prepare:
+  build32:
+    if: github.repository == 'UB-Mannheim/tesseract'
     runs-on: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
-    - name: Install cygwin key and add cygwin sources
-      run: |
-        curl -s https://qemu.weilnetz.de/debian/gpg.key | sudo apt-key add -
-        echo deb https://qemu.weilnetz.de/debian/ testing contrib | \
-        sudo tee /etc/apt/sources.list.d/cygwin.list
-    - name: Install packages
-      run: |
-        sudo apt-get update && \
-        sudo apt-get install --no-install-recommends \
-          mingw-w64-tools nsis asciidoc xsltproc \
-          g++-mingw-w64-i686 \
-          mingw64-i686-liblept5 mingw64-i686-curl \
-          mingw64-i686-libarchive mingw64-i686-giflib mingw64-i686-libpng \
-          mingw64-i686-libwebp mingw64-i686-openjpeg2 mingw64-i686-tiff \
-          mingw64-i686-pango1.0 mingw64-i686-icu \
-          g++-mingw-w64-x86-64 \
-          mingw64-x86-64-liblept5 mingw64-x86-64-curl \
-          mingw64-x86-64-libarchive mingw64-x86-64-giflib mingw64-x86-64-libpng \
-          mingw64-x86-64-libwebp mingw64-x86-64-openjpeg2 mingw64-x86-64-tiff \
-          mingw64-x86-64-pango1.0 mingw64-x86-64-icu
-    - name: Run autogen
-      run: ./autogen.sh
-
-  build32:
-    runs-on: [ubuntu-latest]
-    needs: [prepare]
-    steps:
     - name: Build Tesseract installer (32 bit)
-      run: |
-        mkdir -p bin/w32
-        # Run configure.
-        cd bin/w32 && ../../configure --disable-openmp --host=i686-w64-mingw32 \
-          --prefix=/usr/i686-w64-mingw32 \
-          CXX=i686-w64-mingw32-g++-posix \
-          CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
-        # Make install-jars.
-        make -C bin/w32 install-jars prefix=$PWD/usr/i686-w64-mingw32
-        # Make install.
-        make -C bin/w32 install prefix=$PWD/usr/i686-w64-mingw32
-        # Make training-install.
-        make -C bin/w32 training-install prefix=$PWD/usr/i686-w64-mingw32
-        # Make winsetup.
-        make -C bin/w32 html winsetup prefix=$PWD/usr/i686-w64-mingw32
-        # Copy result for upload.
-        mkdir -p bin/w32/dist && cp bin/w32/nsis/tesseract-ocr-w32-setup-*.exe bin/w32/dist/
-
+      run: .github/workflows/build.sh i686
     - uses: actions/upload-artifact@v1
       with:
         name: Tesseract Installer for Windows (32 bit)
-        path: bin/w32/dist
+        path: dist
 
   build64:
+    if: github.repository == 'UB-Mannheim/tesseract'
     runs-on: [ubuntu-latest]
-    needs: [prepare]
     steps:
+    - uses: actions/checkout@v2
     - name: Build Tesseract installer (64 bit)
-      run: |
-        mkdir -p bin/w64
-        # Run configure.
-        cd bin/w64 && ../../configure --disable-openmp --host=x86_64-w64-mingw32 \
-          --prefix=/usr/x86_64-w64-mingw32 \
-          CXX=x86_64-w64-mingw32-g++-posix \
-          CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
-        # Make install-jars.
-        make -C bin/w64 install-jars prefix=$PWD/usr/x86_64-w64-mingw32
-        # Make install.
-        make -C bin/w64 install prefix=$PWD/usr/x86_64-w64-mingw32
-        # Make training-install.
-        make -C bin/w64 training-install prefix=$PWD/usr/x86_64-w64-mingw32
-        # Make winsetup.
-        make -C bin/w64 html winsetup prefix=$PWD/usr/x86_64-w64-mingw32
-        # Copy result for upload.
-        mkdir -p bin/w64/dist && cp bin/w64/nsis/tesseract-ocr-w64-setup-*.exe bin/w64/dist/
-
+      run: .github/workflows/build.sh x86_64
     - uses: actions/upload-artifact@v1
       with:
         name: Tesseract Installer for Windows (64 bit)
-        path: bin/w64/dist
+        path: dist
