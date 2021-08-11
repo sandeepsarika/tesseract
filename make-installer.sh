@@ -17,7 +17,7 @@ for ARCH in $ARCHS; do
   (
   cd $BUILDDIR
   # Disable OpenMP (see https://github.com/tesseract-ocr/tesseract/issues/1662).
-  ../../../configure --disable-openmp --host=$HOST --prefix=/usr/$HOST CXX=$HOST-g++-posix CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
+  ../../../configure --disable-openmp --enable-float32 --host=$HOST --prefix=/usr/$HOST CXX=$HOST-g++-posix CXXFLAGS="-fno-math-errno -Wall -Wextra -Wpedantic -g -O2"
   make install-jars install training-install html winsetup prefix=$PWD/usr/$HOST
   )
 done
