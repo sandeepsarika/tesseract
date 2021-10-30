@@ -570,11 +570,11 @@ void TrainingSampleSet::OrganizeByFontAndClass() {
   FontClassInfo empty;
   font_class_array_ =
       new GENERIC_2D_ARRAY<FontClassInfo>(compact_font_size, unicharset_size_, empty);
-  for (int s = 0; s < samples_.size(); ++s) {
+  for (size_t s = 0; s < samples_.size(); ++s) {
     int font_id = samples_[s]->font_id();
     int class_id = samples_[s]->class_id();
     if (font_id < 0 || font_id >= font_id_map_.SparseSize()) {
-      tprintf("Font id = %d/%d, class id = %d/%d on sample %d\n", font_id,
+      tprintf("Font id = %d/%d, class id = %d/%d on sample %zu\n", font_id,
               font_id_map_.SparseSize(), class_id, unicharset_size_, s);
     }
     ASSERT_HOST(font_id >= 0 && font_id < font_id_map_.SparseSize());
@@ -607,7 +607,7 @@ void TrainingSampleSet::SetupFontIdMap() {
     ++font_counts[font_id];
   }
   font_id_map_.Init(font_counts.size(), false);
-  for (int f = 0; f < font_counts.size(); ++f) {
+  for (size_t f = 0; f < font_counts.size(); ++f) {
     font_id_map_.SetMap(f, font_counts[f] > 0);
   }
   font_id_map_.Setup();
@@ -651,8 +651,7 @@ void TrainingSampleSet::ComputeCanonicalSamples(const IntFeatureMap &map, bool d
       int max_s2 = 0;
       fcinfo.canonical_sample = fcinfo.samples[0];
       fcinfo.canonical_dist = 0.0f;
-      for (int i = 0; i < fcinfo.samples.size(); ++i) {
-        int s1 = fcinfo.samples[i];
+      for (auto s1 : fcinfo.samples) {
         const std::vector<int> &features1 = samples_[s1]->indexed_features();
         f_table.Set(features1, features1.size(), true);
         double max_dist = 0.0;
