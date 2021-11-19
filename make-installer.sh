@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TAG=5.0.0-rc1.$(date +%Y%m%d)
+TAG=5.0.0.$(date +%Y%m%d)
 
 git tag -a v$TAG -m "Tesseract $TAG"
 
