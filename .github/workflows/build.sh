@@ -34,7 +34,7 @@ sudo apt-get install --assume-yes --no-install-recommends \
   asciidoc xsltproc docbook-xml docbook-xsl \
   automake dpkg-dev libtool pkg-config default-jdk-headless \
   mingw-w64-tools nsis g++-mingw-w64-${ARCH/_/-} \
-  $PKG_ARCH-liblept5 $PKG_ARCH-curl \
+  $PKG_ARCH-liblept5 $PKG_ARCH-curl $PKG_ARCH-libidn2 \
   $PKG_ARCH-libarchive $PKG_ARCH-giflib $PKG_ARCH-libpng \
   $PKG_ARCH-libwebp $PKG_ARCH-openjpeg2 $PKG_ARCH-openssl $PKG_ARCH-tiff \
   $PKG_ARCH-pango1.0 $PKG_ARCH-icu
