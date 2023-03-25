@@ -23,8 +23,8 @@ BUILDDIR=bin/ndebug/$HOST-$TAG
 PKG_ARCH=mingw64-${ARCH/_/-}
 
 # Install packages.
-sudo apt-get update
-sudo apt-get install --assume-yes --no-install-recommends \
+sudo apt-get update --quiet
+sudo apt-get install --assume-yes --no-install-recommends --quiet \
   asciidoc xsltproc docbook-xml docbook-xsl \
   automake dpkg-dev libtool pkg-config default-jdk-headless \
   mingw-w64-tools nsis g++-mingw-w64-${ARCH/_/-}
@@ -34,7 +34,7 @@ sudo curl -Os http://de.archive.ubuntu.com/ubuntu/pool/universe/p/pacman-package
 sudo curl -Os http://de.archive.ubuntu.com/ubuntu/pool/universe/p/pacman-package-manager/libalpm13_6.0.1-4_amd64.deb
 sudo curl -Os http://de.archive.ubuntu.com/ubuntu/pool/universe/p/pacman-package-manager/makepkg_6.0.1-4_amd64.deb
 sudo dpkg -i *.deb || true
-sudo apt-get --fix-broken --assume-yes --no-install-recommends install
+sudo apt-get install --fix-broken --assume-yes --no-install-recommends --quiet
 
 # Configure pacman.
 
