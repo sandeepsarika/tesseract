@@ -42,7 +42,7 @@ Unicode true
 !define PRODUCT_WEB_SITE "https://github.com/tesseract-ocr/tesseract"
 !endif
 !define GITHUB_RAW_FILE_URL \
-  "http://digi.bib.uni-mannheim.de/tesseract/tessdata_fast"
+  "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/main"
 
 !ifdef CROSSBUILD
 !addincludedir ${SRCDIR}\nsis\include
