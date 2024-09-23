@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifdef _WIN32
+# include "convert_to_utf8.h" // for ConvertToUTF8
+#endif
 #include "errcode.h" // for ASSERT_HOST
 #include "helpers.h" // for copy_string
-#ifdef _WIN32
-#  include "host.h"  // windows.h for MultiByteToWideChar, ...
-#endif
 #include "tprintf.h" // for tprintf
 
 #include <tesseract/baseapi.h>
@@ -31,7 +31,8 @@ namespace tesseract {
 /// Add coordinates to specified TextBlock, TextLine or String bounding box.
 /// Add word confidence if adding to a String bounding box.
 ///
-static void AddBoxToAlto(const ResultIterator *it, PageIteratorLevel level,
+static void AddBoxToAlto(const std::unique_ptr<ResultIterator> &it,
+                         PageIteratorLevel level,
                          std::stringstream &alto_str) {
   int left, top, right, bottom;
   it->BoundingBox(level, &left, &top, &right, &bottom);
@@ -146,17 +147,7 @@ char *TessBaseAPI::GetAltoText(ETEXT_DESC *monitor, int page_number) {
   }
 
 #ifdef _WIN32
-  // convert input name from ANSI encoding to utf-8
-  int str16_len = MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, nullptr, 0);
-  wchar_t *uni16_str = new WCHAR[str16_len];
-  str16_len = MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, uni16_str, str16_len);
-  int utf8_len =
-      WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, nullptr, 0, nullptr, nullptr);
-  char *utf8_str = new char[utf8_len];
-  WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, utf8_str, utf8_len, nullptr, nullptr);
-  input_file_ = utf8_str;
-  delete[] uni16_str;
-  delete[] utf8_str;
+  input_file_ = ConvertToUTF8(input_file_);
 #endif
 
   std::stringstream alto_str;
@@ -169,7 +160,7 @@ char *TessBaseAPI::GetAltoText(ETEXT_DESC *monitor, int page_number) {
            << " WIDTH=\"" << rect_width_ << "\""
            << " HEIGHT=\"" << rect_height_ << "\">\n";
 
-  ResultIterator *res_it = GetIterator();
+  std::unique_ptr<ResultIterator> res_it(GetIterator());
   while (!res_it->Empty(RIL_BLOCK)) {
     if (res_it->Empty(RIL_WORD)) {
       res_it->Next(RIL_WORD);
@@ -272,7 +263,6 @@ char *TessBaseAPI::GetAltoText(ETEXT_DESC *monitor, int page_number) {
   alto_str << "\t\t\t</PrintSpace>\n"
            << "\t\t</Page>\n";
 
-  delete res_it;
   return copy_string(alto_str.str());
 }
 

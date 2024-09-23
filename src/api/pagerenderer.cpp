@@ -2,7 +2,7 @@
 // Description: PAGE XML rendering interface
 // Author:      Jan Kamlah
 
-// (C) Copyright 2021
+// (C) Copyright 2024
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifdef _WIN32
+# include "convert_to_utf8.h" // for ConvertToUTF8
+#endif
 #include "errcode.h" // for ASSERT_HOST
 #include "helpers.h" // for copy_string
-#ifdef _WIN32
-#  include "host.h" // windows.h for MultiByteToWideChar, ...
-#endif
 #include "tprintf.h" // for tprintf
 
 #include <tesseract/baseapi.h>
@@ -718,20 +718,7 @@ char *TessBaseAPI::GetPAGEText(ETEXT_DESC *monitor, int page_number) {
   }
 
 #ifdef _WIN32
-  // convert input name from ANSI encoding to utf-8
-  int str16_len =
-      MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, nullptr, 0);
-  wchar_t *uni16_str = new WCHAR[str16_len];
-  str16_len = MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, uni16_str,
-                                  str16_len);
-  int utf8_len = WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, nullptr,
-                                     0, nullptr, nullptr);
-  char *utf8_str = new char[utf8_len];
-  WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, utf8_str, utf8_len,
-                      nullptr, nullptr);
-  input_file_ = utf8_str;
-  delete[] uni16_str;
-  delete[] utf8_str;
+  input_file_ = ConvertToUTF8(input_file_);
 #endif
 
   // Used variables

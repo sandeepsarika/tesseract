@@ -21,10 +21,10 @@
 #include <locale>              // for std::locale::classic
 #include <memory>              // for std::unique_ptr
 #include <sstream>             // for std::stringstream
-#ifdef _WIN32
-#  include "host.h" // windows.h for MultiByteToWideChar, ...
-#endif
 #include <tesseract/renderer.h>
+#ifdef _WIN32
+# include "convert_to_utf8.h"  // for ConvertToUTF8
+#endif
 #include "helpers.h"        // for copy_string
 #include "tesseractclass.h" // for Tesseract
 
@@ -152,20 +152,7 @@ char *TessBaseAPI::GetHOCRText(ETEXT_DESC *monitor, int page_number) {
   }
 
 #ifdef _WIN32
-  // convert input name from ANSI encoding to utf-8
-  int str16_len =
-      MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, nullptr, 0);
-  wchar_t *uni16_str = new WCHAR[str16_len];
-  str16_len = MultiByteToWideChar(CP_ACP, 0, input_file_.c_str(), -1, uni16_str,
-                                  str16_len);
-  int utf8_len = WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, nullptr,
-                                     0, nullptr, nullptr);
-  char *utf8_str = new char[utf8_len];
-  WideCharToMultiByte(CP_UTF8, 0, uni16_str, str16_len, utf8_str, utf8_len,
-                      nullptr, nullptr);
-  input_file_ = utf8_str;
-  delete[] uni16_str;
-  delete[] utf8_str;
+  input_file_ = ConvertToUTF8(input_file_);
 #endif
 
   std::stringstream hocr_str;
